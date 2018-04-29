@@ -1,143 +1,36 @@
 # About
 
-This is ddverpatch utility [migrated from Codeplex](https://ddverpatch.codeplex.com/)
-
-Verpatch is a little tool that we made long long ago for building and maintenance of Windows console applications, DLLs, kernel drivers and so on. 
-
-Besides of updating details in the version info or create a new complete version resource, it can add binary resources to executable and strip the debug information (pdb) path.
-
-**Usage instructions** are in readme.txt file packed in each binary release, and in this wiki.
-
-This utility was first published on [CodeProject](http://www.codeproject.com/Articles/37133/Simple-Version-Resource-Tool-for-Windows).
-
-These days Visual C++ has resource editor for free, so it is no really needed; but we'll keep it here just in case. 
-
-**Thanks**
-
-Thanks go to reviewers and contributors on CodeProject and [Codeplex](https://ddverpatch.codeplex.com/team/view).
-
-# Building
-
-Just get the source and build in a compatible Visual Studio.
-
-The source is provided as Visual C++ 2010 and 2008 projects. It can be compiled with VC 2008, 2010, 2012, 2013 including Express.
-
-The VC 2008 compatible project is in *verpatch(vs2008).sln*, *verpatch.vcproj* files. Files *verpatch.sln*, *verpatch.vcxproj* are for VC++ 2013 Upd.5 (can be possibly downgraded to VS 2010)
-
-We prefer to link statically with the runtime library rather than use runtime DLLs, to "streamline user experience", as MS people use to say. You can link with DLL runtime, if you wish.
-
-*UAC note*: Verpatch does not require any administrator rights and may not work correctly if run elevated. 
-
-The original source for [CodeProject article](http://www.codeproject.com/KB/install/VerPatch.aspx) demonstrates use of the UpdateResource API and imagehlp.dll.
-It does not demonstrate a good use of C++, good coding style or anything else.
-
-# Hacking
-
-Issues and pull requests are welcome.
-
-# Version resource
-
-Below are listed well known string attributes of Version resource and shortcut names (aliases) that verpatch understands.
-
-The aliases in the right column can be used with /s switch,
-in place of +language-neutral+ (LN) attribute names. 
-Attribute names are not case sensitive.
-
-
-| Lang.Neutral name | English translation        | Aliases                                 | Note |
-| ----------------- | -------------------------- | --------------------------------------- | ---- |
-| Comments          | Comments                   | comment                                 |      |
-| CompanyName       | Company                    | company                                 |      |
-| FileDescription   | Description                | description, desc                       | (E)  |
-| FileVersion       | File Version               |                                         | (*1) |
-| InternalName      | Internal Name              | title                                   |
-|                   | Language                   |                                         | (*2) |
-| LegalCopyright    | Copyright                  | copyright, (c)                          | (E)  |
-| LegalTrademarks   | Legal Trademarks           | tm, (tm)                                | (E)  |
-| OriginalFilename  | Original File Name         |                                         |      |
-| ProductName       | Product Name               | product                                 |      |
-| ProductVersion    | Product Version            | pv, productversion, productver, prodver | (*1) |
-| PrivateBuild      | Private Build Description  | pb, private                             |      |
-| SpecialBuild      | Special Build  Description | sb, build                               |      |
-| OleSelfRegister   | -                          | -                                       | (A)  |
-| AssemblyVersion   | -                          | -                                       | (N)  |
-
-Notes
-
-*1: FileVersion, ProductVersion should not be specified with /s switch.
-See the command line parameters above.
-The string values normally begin with same 1.2.3.4 version number as in the binary header,
-but can be any text. Explorer of WinXP also displays File Version text in the strings box.
-In Win7 or newer, Explorer displays the version numbers from the binary header only.
-
-*2: The "Language" value is the name of the language code specified in the header of the
- string block of VS_VERSION_INFO resource (or taken from VarFileInfo block?)
-It is displayed by Windows XP Explorer.
-
-E: Displayed by Windows Explorer in Win7
-
-A: Intended for some API (OleSelfRegister is used in COM object registration)
-
-N: Added by some .NET compilers. This version number is not contained in the
-   binary part of the version struct and can differ from the file version.
-   To change it, use switch /s AssemblyVersion [value]. Note: this will not
-   change the actual .NET assembly version.
-
-# Links/References
-
-
-MSDN on VERSIONINFO resources
-
-https://msdn.microsoft.com/en-us/library/windows/desktop/aa381058(v=vs.85).aspx
-
-Semantic versioning
-http://semver.org
-
-Raymond Chen, 2006 / The evolution of version resources - 32-bit version resources
-http://blogs.msdn.com/b/oldnewthing/archive/2006/12/21/1340571.aspx
-
-Raymond Chen, 2006 / The evolution of version resources – corrupted 32-bit version resources (continuation of the previous)
-https://blogs.msdn.microsoft.com/oldnewthing/20061222-00/?p=28623
-
-Raymond Chen, 2006 / The first parameter to VerQueryValue really must be a buffer you obtained from GetFileVersionInfo
-https://blogs.msdn.microsoft.com/oldnewthing/20061226-06/?p=28603
-
-Raymond Chen, 2012 / Why doesn’t the Version tab show up for very large files?
-https://blogs.msdn.microsoft.com/oldnewthing/20120418-00/?p=7833/
-
-
-Raymond Chen, 2011 / PE resources must be 4-byte aligned, but that doesn’t stop people from trying other alignments
-https://blogs.msdn.microsoft.com/oldnewthing/20110609-00/?p=10463
-
-Raymond Chen, 2012 / Why does the VerQueryValue function give me the wrong file version number?
-https://blogs.msdn.microsoft.com/oldnewthing/20120315-00/?p=8093 - about MUI satellite DLL  redirection
-
-* search in the blog of Raymond Chen for everything related to version resources
-
-# Usage
-
-(June-2013)
-
 Verpatch is a command line tool for adding and editing the version information
 of Windows executable files (applications, DLLs, kernel drivers) without rebuilding the executable.
 
-It can also add or replace Win32 (native) resources, and do some other modifications of executable files.
+It can also add or replace Win32 (native) resources, and do some other modifications of executable files, such as stripping the debug information (pdb) path.
 
+The project has been migrated to GitHub from the original [CodePlex project](https://ddverpatch.codeplex.com/), which in turn were a continuation of a [CodeProject article](https://www.codeproject.com/Articles/37133/Simple-Version-Resource-Tool-for-Windows) (with source) originally published in 2009.
 
-## Command line 
+## Note
 
-    verpatch filename [version] [/options] 
+These days Visual C++ has resource editor for free, so it is no really needed; but it might still come in handy, and the source code might be useful for reference.
+
+## Thanks
+
+Thanks to reviewers and contributors on CodeProject and [Codeplex](https://ddverpatch.codeplex.com/team/view).
+
+# Usage
+
+```
+verpatch filename [version] [/options]
+```
 
 Where
- * filename : any Windows PE file (exe, dll, sys, ocx...) that can have a version resource
- * version : one to four decimal numbers, separated by dots, ex.: 1.2.3.4 <br>
+ * filename : Any Windows PE file (exe, dll, sys, ocx...) that can have a version resource
+ * version : One to four decimal numbers, separated by dots, ex.: 1.2.3.4<br>
    Additional text can follow the numbers; see examples below. Ex.: "1.2.3.4 extra text"
 
-Verpatch sets ERRORLEVEL 0 on success, otherwise errorlevel is non-zero.
-Verpatch modifies files in place, so please make copies of precious files.
+The command will set ERRORLEVEL 0 on success, otherwise errorlevel is non-zero.
 
+**Note:** Verpatch modifies files in place, so please make copies of precious files.
 
-## Common Options:
+## Main Options:
 
 /va - creates a version resource. Use when the file has no version resource at all,
      or existing version resource should be replaced.
@@ -155,7 +48,7 @@ Verpatch modifies files in place, so please make copies of precious files.
 /high - when less than 4 version numbers, these are major numbers. By default, less than 4 numbers are minor numbers.
 
 
-## More options
+## Additional options
 
 /fn - preserves Original filename, Internal name in the existing version resource of the file.
 
@@ -184,33 +77,36 @@ Verpatch modifies files in place, so please make copies of precious files.
 
 ## Examples
 
-    verpatch d:\foo.dll 1.2.33.44 
-    - sets the file version to 1.2.33.44
-        The Original file name and Internal name strings are set to "foo.dll".
-        File foo.dll should already have a version resource (since /va not specified)
+```verpatch d:\foo.dll 1.2.33.44```
 
-    verpatch d:\foo.dll 1.2.33 /high 
-    - sets three major 3 numbers of the file version. The 4th number not changed
-        File foo.dll should already have a version resource.
+Sets the file version to 1.2.33.44.
+The Original file name and Internal name strings are set to "foo.dll".
+File foo.dll should already have a version resource (since /va not specified).
 
-    verpatch d:\foo.dll 33.44  /s comment "a comment" 
-    - replaces only two minor numbers of the file version and adds a comment.
-        File foo.dll should already have a version resource.
+```verpatch d:\foo.dll 1.2.33 /high```
 
-    verpatch d:\foo.dll "33.44 special release" /pv 1.2.3.4 
-    - same as previous, with additional text in the version argument.
-        - Product version is also fully specified
+Sets three major 3 numbers of the file version. The 4th number not changed.
+File foo.dll should already have a version resource.
 
-    verpatch d:\foo.dll "1.2.33.44" /va /s description "foo.dll" /s company "My Company" /s copyright "(c) 2009"
-    - creates or replaces version resource to foo.dll, with several string values
+```verpatch d:\foo.dll 33.44  /s comment "a comment"```
 
-    verpatch d:\foo.dll /vo /xi 
-    - dumps the version resource in RC format, does not update the file.
+Replaces only two minor numbers of the file version and adds a comment.
+File foo.dll should already have a version resource.
 
+```verpatch d:\foo.dll "33.44 special release" /pv 1.2.3.4```
 
+Same as previous, with additional text in the version argument.
+Product version is also fully specified
+
+```verpatch d:\foo.dll "1.2.33.44" /va /s description "foo.dll" /s company "My Company" /s copyright "(c) 2009"```
+
+Creates or replaces version resource to foo.dll, with several string values
+
+```verpatch d:\foo.dll /vo /xi```
+
+Dumps the version resource in RC format, does not update the file.
     
 ## Details
-
 
 In "patch" mode (no /va option), verpatch replaces the version number in existing file 
 version info resource with the values given on the command line.
@@ -300,3 +196,174 @@ Please, verify that executable files that contain extra data work correctly afte
 Make backup of valuable files before modification.
 
 Note: digital certificates appended to the file cannot be reliably removed by /noed; this issue may be fixed in next releases. For now, use "delcert" utility (google) to remove certificates from a file before using verpatch on it.
+
+## Version resource (VS_VERSION_INFO)
+
+Below are listed well known string attributes of Version resource and shortcut names (aliases) that Verpatch understands.
+
+The aliases in the right column can be used with /s switch,
+in place of +language-neutral+ (LN) attribute names. 
+Attribute names are not case sensitive.
+
+
+| Lang.Neutral name | English translation        | Aliases                                 | Note |
+| ----------------- | -------------------------- | --------------------------------------- | ---- |
+| Comments          | Comments                   | comment                                 |      |
+| CompanyName       | Company                    | company                                 |      |
+| FileDescription   | Description                | description, desc                       | (E)  |
+| FileVersion       | File Version               |                                         | (*1) |
+| InternalName      | Internal Name              | title                                   |
+|                   | Language                   |                                         | (*2) |
+| LegalCopyright    | Copyright                  | copyright, (c)                          | (E)  |
+| LegalTrademarks   | Legal Trademarks           | tm, (tm)                                | (E)  |
+| OriginalFilename  | Original File Name         |                                         |      |
+| ProductName       | Product Name               | product                                 |      |
+| ProductVersion    | Product Version            | pv, productversion, productver, prodver | (*1) |
+| PrivateBuild      | Private Build Description  | pb, private                             |      |
+| SpecialBuild      | Special Build  Description | sb, build                               |      |
+| OleSelfRegister   | -                          | -                                       | (A)  |
+| AssemblyVersion   | -                          | -                                       | (N)  |
+
+Notes
+
+*1: FileVersion, ProductVersion should not be specified with /s switch.
+See the command line parameters above.
+The string values normally begin with same 1.2.3.4 version number as in the binary header,
+but can be any text. Explorer of WinXP also displays File Version text in the strings box.
+In Win7 or newer, Explorer displays the version numbers from the binary header only.
+
+*2: The "Language" value is the name of the language code specified in the header of the
+ string block of VS_VERSION_INFO resource (or taken from VarFileInfo block?)
+It is displayed by Windows XP Explorer.
+
+E: Displayed by Windows Explorer in Win7
+
+A: Intended for some API (OleSelfRegister is used in COM object registration)
+
+N: Added by some .NET compilers. This version number is not contained in the
+   binary part of the version struct and can differ from the file version.
+   To change it, use switch /s AssemblyVersion [value]. Note: this will not
+   change the actual .NET assembly version.
+
+## UAC (administrative privileges)
+
+Verpatch does not require any administrator rights and may not work correctly if run elevated.
+
+## Character encoding
+
+Working with characters from extended character sets in Command Prompt and Batch files
+might give you some challenges. For instance if you want to create a Batch script executing
+Verpatch to enter the copyright symbol © into the copyright resource (`/s copyright "© 2017"`),
+you might end up with the trademark symbol ® instead! The issue is that the command line
+interpreter uses code page 850, the so-called OEM code page, which is different from the
+Windows ANSI/Latin 1 character set you probably (in western Europe) would save your
+Batch file in. You could of course just use the ASCII equivalent "(C)" instead,
+but setting the code page 1252 (`chcp 1252 > nul`) in the beginning of your batch
+script will make the copyright symbol show as intended. 
+
+# Building
+
+Just get the source and build in a compatible Visual Studio.
+
+The source can be compiled with VC 2008 and newer, and projects for Visual C++ 2017, 2013 and 2008 are included:
+* The VC2017 project is the files verpatch(vs2017).sln and verpatch(2017).vcxproj. The application are built with platform toolset v141, so it can run on Windows Vista (and newer).
+* The VC2013 project is the files verpatch.sln and verpatch.vcxproj. The application will be built with platform toolset v120_xp, so it can run on Windows XP SP3 (and newer).
+* The VC2008 project is the files verpatch(vs2008).sln and verpatch.vcproj. The built application can run on Windows 2000 (and newer).
+
+We prefer to link statically with the runtime library rather than use runtime DLLs, to "streamline user experience", as MS people use to say. You can link with DLL runtime, if you wish.
+
+The original source for [CodeProject article](http://www.codeproject.com/KB/install/VerPatch.aspx) demonstrates use of the UpdateResource API and imagehlp.dll.
+It does not demonstrate a good use of C++, good coding style or anything else.
+
+# Hacking
+
+Issues and pull requests are welcome.
+
+# Links/References
+
+MSDN on VERSIONINFO resources
+
+https://msdn.microsoft.com/en-us/library/windows/desktop/aa381058(v=vs.85).aspx
+
+Semantic versioning
+http://semver.org
+
+Raymond Chen, 2006 / The evolution of version resources - 32-bit version resources
+http://blogs.msdn.com/b/oldnewthing/archive/2006/12/21/1340571.aspx
+
+Raymond Chen, 2006 / The evolution of version resources – corrupted 32-bit version resources (continuation of the previous)
+https://blogs.msdn.microsoft.com/oldnewthing/20061222-00/?p=28623
+
+Raymond Chen, 2006 / The first parameter to VerQueryValue really must be a buffer you obtained from GetFileVersionInfo
+https://blogs.msdn.microsoft.com/oldnewthing/20061226-06/?p=28603
+
+Raymond Chen, 2012 / Why doesn’t the Version tab show up for very large files?
+https://blogs.msdn.microsoft.com/oldnewthing/20120418-00/?p=7833/
+
+Raymond Chen, 2011 / PE resources must be 4-byte aligned, but that doesn’t stop people from trying other alignments
+https://blogs.msdn.microsoft.com/oldnewthing/20110609-00/?p=10463
+
+Raymond Chen, 2012 / Why does the VerQueryValue function give me the wrong file version number?
+https://blogs.msdn.microsoft.com/oldnewthing/20120315-00/?p=8093 - about MUI satellite DLL  redirection
+
+Search in the blog of Raymond Chen for everything related to version resources.
+
+# Versions
+
+## 1.0.15 (25-Oct-2016)
+
+## 1.0.14 (04-Aug-2013)
+
+Fixed issue with ANSI VerQueryValue truncating last character.
+
+## 1.0.12 (21-Jun-2013)
+
+## 1.0.10 (02-Sep-2012)
+
+Included build configuration for VC2005, which did not know about the UAC manifest configuration (requestedExecutionLevel), so it had to be added via the *additional manifest file* configuration
+to avoid Windows 7 (erroneously) deciding that Verpatch should run elevated. With later upgrade
+to VC2008 this workaround could be removed, as there was a specific AsInvoker project setting.
+
+# Known issues and TODO
+
+ - Does not work on old PE files that have link version 5.x (before VC6?)
+   No known workaround; this seems to be limitation of Windows UpdateResource API.
+   Since the UpdateResource API is part of Windows, its behaviour may differ on
+   different Windows releases. On Win7 SP1 you may get better results than on WinXP.
+   
+ - Import of version resource does not work if it is not encoded in UTF-16.
+
+ - Does not work on files signed with digital certificates (TO DO: Warn and remove certificate)
+   Until we do this, certificates can be removed with 3rd party delcert tool.
+
+ - A second version resource may be added to a file that already has a version resource
+   in other language. Switch /va won't help.
+   TODO: Ensure that a file has only one version resource!
+   
+ - When verpatch is invoked from command prompt, or batch file, the string
+   arguments can contain only ANSI characters, because cmd.exe batch files cannot be 
+   in Unicode format. If you need to include characters not in current locale,
+   use other shell languages that fully support Unicode (Powershell, vbs, js).
+   
+ - TODO: In RC source output (/vo), special characters in strings are not quoted;
+   so /vo may produce invalid RC input.
+   
+ - The parser of binary version resources handles only the most common type of structure.
+   If the parser breaks because of unhandled structure format, try /va switch to
+   skip reading existing version resource and re-create it from scratch.
+   Consider using WINE or other open source implementations?
+   
+ - option to add extra 0 after version strings : "string\0"
+   (tentative, requested by a reader for some old VB code) 
+
+ - For files with extra data appended, checksum is not re-calculated.
+   Such files usually implement their own integrity check.
+
+ - Switch /va does not prevent import of existing version resource. Revise.
+
+ - When existing version string contains "tail" but the command line parameter does not,
+   the tail is removed. In previous versions the tail was preserved.
+
+ - Running Verpatch on certain executables (esp. built with GNU) produce corrupt file
+   when run on WinXP SP3, but same binaries give good result when run on Win7 or 2008R2.
+   (Improvement of UpdateResource API?)
