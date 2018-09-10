@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="peExtras.cpp" />
+    <ClCompile Include="peutils.cpp" />
+    <ClCompile Include="relstamp.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="vs_version.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="peExtras.h" />
+    <ClInclude Include="relstamp.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="vs_version.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="usage.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ver-self.cmd" />
+  </ItemGroup>
+</Project>

@@ -20,4 +20,4 @@ v.exe verpatch.exe /va %_ver% %_s1% %_s2% %_resfile%
 
 @echo Errorlevel=%errorlevel%
 
-@rem del v.exe
+del v.exe
