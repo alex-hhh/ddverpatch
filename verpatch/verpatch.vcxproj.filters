@@ -19,5 +19,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ver-self.cmd" />
+    <None Include="verpatch.nuspec" />
   </ItemGroup>
 </Project>

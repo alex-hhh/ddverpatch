@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>verpatch</id>
+    <version>1.0.15.1</version>
+    <title>Verpatch</title>
+    <authors>ddbug</authors>
+    <owners>ddbug</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <developmentDependency>true</developmentDependency>
+    <licenseUrl>https://ddverpatch.codeplex.com/license</licenseUrl>
+    <projectUrl>https://ddverpatch.codeplex.com/</projectUrl>
+    <description>Verpatch is a command line tool for adding and editing the version information of Windows executable files (applications, DLLs, kernel drivers) without rebuilding the executable.
+
+It can also add or replace Win32 (native) resources, and do some other modifications of executable files, such as stripping the debug information (pdb) path.
+    </description>
+    <summary>Command line tool for manipulating the version information of Windows executable files.</summary>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright �  2017</copyright>
+    <language>en-US</language>
+  </metadata>
+  <files>
+    <file src="bin\release\verpatch.exe" target="tools" />
+  </files>
+</package>

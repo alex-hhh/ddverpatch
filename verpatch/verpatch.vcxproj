@@ -139,6 +139,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="ver-self.cmd" />
+    <None Include="verpatch.nuspec" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
