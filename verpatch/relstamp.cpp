@@ -677,7 +677,7 @@ bool cmd_params::cmd_arg_parse( int argc, _TCHAR *argv[], PCTSTR *fname,
 				ap = argv[++i];	ASSERT(ap);
 				ULONG res_id = 0;
 				if ( *ap++ != _T('#') || 0 == (res_id = _tcstoul( ap, NULL, 16 )) ) {
-					dtprint(_T("Resource id must be #hex_number\n"), ap);
+					dtprint(_T("Resource id must be #hex_number ap=%s\n"), ap);
 					return false;
 				}
 

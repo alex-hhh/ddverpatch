@@ -47,7 +47,7 @@ class yybuf
 
 	void pushstr( __in LPCWSTR ws, bool b_align = TRUE ) {
 		if ( !ws ) return;
-		WORD n = wcslen( ws );
+		size_t n = wcslen( ws );
 		ASSERT( n < _MAX_VER_STRING_LEN_CCH );
 		n = (n + 1) * sizeof(WCHAR);
 		checkspace(n + sizeof(DWORD));
@@ -164,12 +164,12 @@ class xybuf
 	}
 
 	void chkstr( __in LPCWSTR ws, bool b_align = TRUE ) {
-		WORD n = wcslen( ws );
+		size_t n = wcslen( ws );
 		ASSERT ( n );
 		ASSERT( n < _MAX_VER_STRING_LEN_CCH );
 		checkspace((n + 1) * sizeof(WCHAR) + sizeof(DWORD));
 
-		for (int i = 0; i <= n; i++ ) { // incl. term. 0
+		for (size_t i = 0; i <= n; i++ ) { // incl. term. 0
 			if ( *(PWCHAR)m_curptr != *ws &&
 				 *(PWCHAR)m_curptr != (*ws ^ 0x20) )
 				throw ":chkstr";

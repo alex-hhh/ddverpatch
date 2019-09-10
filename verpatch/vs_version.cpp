@@ -91,8 +91,8 @@ BOOL makeVersionResource( __in file_ver_data_s const * fvd, __out PUCHAR *retp )
         
 		if ( fvd->sFileVerTail ) {
             if ( fvd->cFileVerTailSeparator ) {
-                WCHAR tailsep[2] = {fvd->cFileVerTailSeparator, 0};
-			    hr = ::StringCbCatW(&temps[0], sizeof(temps), tailsep);
+                char tailsep[2] = {fvd->cFileVerTailSeparator, 0};
+			    hr = ::StringCbCatW(&temps[0], sizeof(temps), reinterpret_cast<WCHAR*>(&tailsep[0]));
             }
 			hr = ::StringCbCatW(&temps[0], sizeof(temps), fvd->sFileVerTail);
 			if ( !SUCCEEDED(hr) ) temps[0] = 0;
@@ -118,8 +118,8 @@ BOOL makeVersionResource( __in file_ver_data_s const * fvd, __out PUCHAR *retp )
 		if ( !SUCCEEDED(hr) ) temps[0] = 0;
 		if ( fvd->sProductVerTail ) {
             if ( fvd->cProductVerTailSeparator ) {
-                WCHAR tailsep[2] = {fvd->cProductVerTailSeparator, 0};
-			    hr = ::StringCbCatW(&temps[0], sizeof(temps), tailsep);
+                char tailsep[2] = {fvd->cProductVerTailSeparator, 0};
+			    hr = ::StringCbCatW(&temps[0], sizeof(temps), reinterpret_cast<WCHAR*>(&tailsep[0]));
             }
 			hr = ::StringCbCatW(&temps[0], sizeof(temps), fvd->sProductVerTail);
 			if ( !SUCCEEDED(hr) ) temps[0] = 0;
@@ -127,7 +127,7 @@ BOOL makeVersionResource( __in file_ver_data_s const * fvd, __out PUCHAR *retp )
 
 		if (fvd->sProductVerOverride)
 		{
-			d2print("Overriding Product version:[%ws]\n", fvd->sProductVerOverride);
+			d2print("Overriding Product version:[%ws]\n", (PCWSTR)(fvd->sProductVerOverride));
 			vbuf.pushTwostr(L"ProductVersion", fvd->sProductVerOverride);
 		}
 		else
@@ -275,7 +275,7 @@ BOOL ParseBinaryVersionResource(
 
 	// Language string: ex. "040904B0"
 	vbuf.checkspace( 10 * sizeof(WCHAR) );
-	WORD n = wcslen( (PCWSTR)vbuf.getptr() );
+	size_t n = wcslen( (PCWSTR)vbuf.getptr() );
 	if (n != 8)
 		throw(":bad_lang_str");
 	memcpy( sigLang, vbuf.getptr(), (n + 1)*sizeof(WCHAR) ); //incl term. 0
