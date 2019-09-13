@@ -37,7 +37,7 @@ struct ResDesc
 	ULONG_PTR m_name; // string ptr or numeric id
 	WORD m_language;
 
-	ResDesc() : m_data(0), m_cbdata(0) {}
+	ResDesc() : m_data(0), m_cbdata(0), m_type(0), m_name(0), m_language(LANG_NEUTRAL) {}
 
 	ResDesc( void *data, unsigned cbData, ULONG_PTR typeId, 
 		ULONG_PTR name_id, WORD langId = LANG_NEUTRAL ) 
@@ -150,6 +150,7 @@ void VerCallback1::callback( PCWSTR name, PCWSTR value )
 	m_vd->addTwostr( name, value );
 }
 
+_Success_(return)
 BOOL fillFileInfo( __out file_ver_data_s *fvd, PCTSTR fpath )
 {
 	UINT xname, xdot_ext;
@@ -167,11 +168,11 @@ BOOL fillFileInfo( __out file_ver_data_s *fvd, PCTSTR fpath )
 		PUCHAR verinfo = (PUCHAR)calloc( _MAX_VERS_SIZE_CB, 1 );
 		ASSERT(verinfo);
 		if ( !fileReadVersionInfo( fpath, verinfo, _MAX_VERS_SIZE_CB ) ) {
-			dprint("error reading version info from the file, err=%d\n", GetLastError());
+			dprint("error reading version info from the file [%ws], err=%d\n", fpath, GetLastError());
 			if (ERROR_RESOURCE_TYPE_NOT_FOUND == GetLastError() )
 				dprint("The file does not have a version resource; use /va\n");
 			if (ERROR_RESOURCE_DATA_NOT_FOUND == GetLastError() )
-				dprint("The file could not be found or is not executable/dll\n");
+				dprint("The file [%ws] could not be found or is not executable/dll\n", fpath);
 			free(verinfo);
 			return FALSE;
 		}
@@ -426,6 +427,9 @@ long parseFileSubType( PCTSTR ap )
 int _tmain(int argc, _TCHAR* argv[])
 {
 	static file_ver_data_s file_ver_data;
+
+    ZeroMemory(&file_ver_data, sizeof(file_ver_data_s));
+
 	PCTSTR fname;
 	BOOL r;
 
@@ -748,8 +752,10 @@ LPWSTR stralloc( __in PCSTR s )
 	ASSERT( n < (256));
 	LPWSTR p = (LPWSTR)malloc( (n + 1) * sizeof(WCHAR) );
 	ASSERT( p );
-	for ( size_t i = 0; i <= n; i++ )
-		p[i] = s[i];
+    if (p) {
+        for (size_t i = 0; i <= n; i++)
+            p[i] = s[i];
+    }
 	return p;
 }
 
@@ -762,6 +768,7 @@ LPWSTR stralloc( __in PCWSTR s )
 }
 
 // return byte offset to name and .ext parts of filename
+_Success_(return)
 BOOL fileGetNameExtFromPath( __in PCTSTR path, __out PUINT pname, __out PUINT pext )
 {
 	ASSERT(path);
@@ -808,7 +815,7 @@ PCWSTR strUnEscape( __in PCWSTR ws )
 	return ws; //$$$ TODO
 }
 
-bool argmatch(PCTSTR sw, PCTSTR cmp )
+bool argmatch(__in PCTSTR sw, __in PCTSTR cmp)
 {
 	if ( 0 == _tcsicmp(sw, cmp) ) return true;
 	return false;
@@ -869,7 +876,8 @@ bool addResourceFromFile( PCTSTR resfile, UINT32 id_flags )
 #if 1
 // Get a resource (pointer and size)
 // hm: module handle. 0 is the exe file
-bool getResource( HMODULE hm, DWORD rtype, DWORD rid, __out LPCVOID *p, __out PDWORD size )
+_Success_(return)
+bool getResource( HMODULE hm, DWORD rtype, DWORD rid, __out LPCVOID *p, __out PDWORD size ) 
 {
 	HRSRC hrs = FindResourceEx( hm, (LPCTSTR)rtype, (LPCTSTR)rid, 0 /* Lang. Neutral */ );
 	if ( !hrs ) {

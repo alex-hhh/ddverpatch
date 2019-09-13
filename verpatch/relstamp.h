@@ -52,6 +52,7 @@ PCWSTR strUnEscape( __in PCWSTR ws );
 LPWSTR stralloc( __in PCSTR s );
 LPWSTR stralloc( __in PCWSTR s );
 // Get name, ext from full filename
+_Success_(return)
 BOOL fileGetNameExtFromPath( __in PCTSTR path, __out PUINT pname, __out PUINT pext );
 BOOL fileReadVersionInfo( __in PCTSTR fname, __out PUCHAR buf, __in unsigned size);
 
